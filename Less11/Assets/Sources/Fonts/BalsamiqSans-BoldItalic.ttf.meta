@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: de29bbdd4e0470c4b82a42bc8b9bf513
+guid: 4136c6acd22a60d4299632563d021e52
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Bangers
+  fontName: Balsamiq Sans
   fontNames:
-  - Bangers
+  - Balsamiq Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
