@@ -24,7 +24,17 @@ public class SceneScript_MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Game");
+        StartCoroutine(LoadScene("Game"));
+    }
+
+    IEnumerator LoadScene(string sceneName)
+    {
+        var sceneFading = Camera.main.GetComponent<SceneFading>();
+        sceneFading.FadeOut();
+        float fadeTime = sceneFading.GetFadeTime();
+        Debug.Log(fadeTime);
+        yield return new WaitForSeconds(fadeTime);
+        SceneManager.LoadScene(sceneName);
     }
 
     void HideAllPanels()

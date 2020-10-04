@@ -874,6 +874,7 @@ GameObject:
   - component: {fileID: 322020275}
   - component: {fileID: 322020274}
   - component: {fileID: 322020277}
+  - component: {fileID: 322020278}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1012,6 +1013,23 @@ MonoBehaviour:
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   - assemblyQualifiedName: DitzelGames.PostProcessingTextureOverlay.TextureOverlay,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &322020278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322020273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47e5550cea5bdb7419f238809232c8b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadingTexture: {fileID: 2800000, guid: a5ce4151d626f8843ba32874ca34f61f, type: 3}
+  fadeSpeed: 0.3
+  alpha: 1
+  fadeDirection: -1
+  drawDepth: -1000
 --- !u!1001 &354842686
 PrefabInstance:
   m_ObjectHideFlags: 0
