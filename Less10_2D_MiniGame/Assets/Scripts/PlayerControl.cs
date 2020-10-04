@@ -14,24 +14,32 @@ public class PlayerControl : MonoBehaviour
     GameObject killZone = null;
 
     bool isOnPlatform = false;
+    
     float jumpForce = 0f;
     [Tooltip("Скорость набора силы прыжка")]
     [SerializeField]
     float jumpForceAcc = 1.5f;
     [SerializeField]
     float jumpForceMax = 500;
+    int jumpAmount = 0;
 
     Rigidbody _rigidbody = null;
-    int jumpAmount = 0;
+    AudioSource _audioSource = null;
+
+
+    [SerializeField]
+    AudioClip[] ohs;
 
     void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>();
         jumpAmount = 0;
     }
 
     public int GetJumpAmount()
     {
+        
         return jumpAmount;
     }
 
@@ -68,6 +76,8 @@ public class PlayerControl : MonoBehaviour
             var newPlatform = Instantiate(platformPrefab);
             newPlatform.transform.position = collision.transform.position + new Vector3(Random.Range(2.5f, 3.5f), Random.Range(-4, -5));
             newPlatform.transform.localScale = new Vector3(Random.Range(1.2f, 2f), Random.Range(0.5f, 0.7f), 1);
+            _audioSource.clip = ohs[Random.Range(0, ohs.Length - 1)];
+            _audioSource.Play();
             jumpAmount++;
             collision.gameObject.tag = "PlatformDisabled";
         }
@@ -87,4 +97,5 @@ public class PlayerControl : MonoBehaviour
             GameControl.Instance.SetPause(true);
         }
     }
+
 }
