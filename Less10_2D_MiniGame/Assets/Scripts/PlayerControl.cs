@@ -5,39 +5,57 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviour
 {
     [SerializeField]
+    GameObject model = null;
+    [SerializeField]
     GameObject cameraTarget = null;
     [SerializeField]
     GameObject platformPrefab = null;
+    [SerializeField]
+    GameObject killZone = null;
 
     bool isOnPlatform = false;
     float jumpForce = 0f;
     [Tooltip("Скорость набора силы прыжка")]
     [SerializeField]
-    float jumpForceAcc = 1f;
+    float jumpForceAcc = 1.5f;
+    [SerializeField]
+    float jumpForceMax = 500;
 
-    Rigidbody rigidbody = null;
+    Rigidbody _rigidbody = null;
+    int jumpAmount = 0;
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
+        jumpAmount = 0;
+    }
+
+    public int GetJumpAmount()
+    {
+        return jumpAmount;
     }
 
     void Update()
     {
+        var height = 1f;
         if (isOnPlatform)
         {
             if (Input.GetAxisRaw("Fire1") != 0)
             {
                 jumpForce += jumpForceAcc * Time.deltaTime;
+                if (jumpForce > jumpForceMax) 
+                    jumpForce = jumpForceMax;
+                height = (jumpForceMax - jumpForce) / (jumpForceMax*2) + 0.5f;
+                model.transform.localScale = new Vector3(1f, height, 1f);
             } else
             {
                 if (jumpForce != 0)
                 {
-                    rigidbody.AddRelativeForce(new Vector3(1f* jumpForce, 1f* jumpForce, 0f));
+                    _rigidbody.AddForce(new Vector3(1f* jumpForce, 1f* jumpForce, 0f));
                     jumpForce = 0;
+                    model.transform.localScale = Vector3.one;
                 }
             }
-
         }
     }
 
@@ -46,19 +64,27 @@ public class PlayerControl : MonoBehaviour
         if (collision.gameObject.tag == "Platform")
         {
             cameraTarget.transform.position = collision.transform.position + new Vector3(1.8f, -0.7f);
-            var newPlatform = GameObject.Instantiate(platformPrefab);
+            killZone.transform.position = collision.transform.position + new Vector3(0, -13f);
+            var newPlatform = Instantiate(platformPrefab);
             newPlatform.transform.position = collision.transform.position + new Vector3(Random.Range(2.5f, 3.5f), Random.Range(-4, -5));
             newPlatform.transform.localScale = new Vector3(Random.Range(1.2f, 2f), Random.Range(0.5f, 0.7f), 1);
+            jumpAmount++;
+            collision.gameObject.tag = "PlatformDisabled";
         }
     }
 
     private void OnCollisionStay(Collision collision)
     {
-        isOnPlatform = collision.gameObject.tag == "Platform";
+        isOnPlatform = collision.gameObject.tag == "PlatformDisabled";
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("d");
+        if (other.gameObject.tag == "KillZone")
+        {
+            GameControl.Instance.SetRecord(jumpAmount);
+            GameControl.Instance.SetPause(true);
+        }
     }
 }
