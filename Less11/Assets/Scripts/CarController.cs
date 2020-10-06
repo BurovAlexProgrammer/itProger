@@ -36,7 +36,9 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(transform.position - transform.forward * speed * Time.fixedDeltaTime);
+        rigidbody.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
+        //rigidbody.velocity = Vector3.forward * speed;
+        //rigidbody.AddRelativeForce(Vector3.forward * speed);
     }
 
     private void OnTriggerStay(Collider other)
