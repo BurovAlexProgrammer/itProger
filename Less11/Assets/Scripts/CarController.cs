@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
 {
+    bool isCrashed = false;
     float currentSpeed;
     [SerializeField]
     float speed = 15f,
@@ -23,10 +24,10 @@ public class CarController : MonoBehaviour
     float boostTime = 0f;
 
     [SerializeField]
-    GameObject leftSignalGroup;
+    GameObject leftSignalGroup = null;
     [SerializeField]
-    GameObject rightSignalGroup;
-    Coroutine signalCoroutine;
+    GameObject rightSignalGroup = null;
+    Coroutine signalCoroutine = null;
 
     Rigidbody rigidbody = null;
 
@@ -66,9 +67,8 @@ public class CarController : MonoBehaviour
             boostTime = 0f; 
             currentSpeed = speed; 
         }
-        rigidbody.MovePosition(transform.position + transform.forward * currentSpeed * Time.fixedDeltaTime);
-        //rigidbody.velocity = Vector3.forward * speed;
-        //rigidbody.AddRelativeForce(Vector3.forward * speed);
+        //rigidbody.MovePosition(transform.position + transform.forward * currentSpeed * Time.fixedDeltaTime);
+        rigidbody.velocity = transform.forward * currentSpeed;
     }
 
     private void OnTriggerStay(Collider other)
@@ -111,7 +111,8 @@ public class CarController : MonoBehaviour
 
     public void BlinkStop()
     {
-        StopCoroutine(signalCoroutine);
+        if (signalCoroutine != null)
+            StopCoroutine(signalCoroutine);
         rightSignalGroup.SetActive(false);
         leftSignalGroup.SetActive(false);
     }
@@ -129,6 +130,20 @@ public class CarController : MonoBehaviour
             rigidbody.rotation = Quaternion.Euler(0, newRotY, 0);
 
             BlinkStop();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Car") || collision.collider.CompareTag("Building"))
+        {
+            GamesController.instance.Lose();
+            //collision.collider.GetComponent<CarController>().BlinkStop();
+            //Destroy(collision.collider.GetComponent<CarController>());
+            //rigidbody.AddRelativeForce(Vector3.forward * 300);
+            //collision.rigidbody.AddRelativeForce(Vector3.back * 300);
+            BlinkStop();
+            Destroy(this);
         }
     }
 

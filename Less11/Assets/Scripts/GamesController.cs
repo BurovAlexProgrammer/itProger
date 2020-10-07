@@ -4,12 +4,25 @@ using UnityEngine;
 
 public class GamesController : MonoBehaviour
 {
+    public static GamesController instance;
     [SerializeField]
     GameObject[] carPrefabs;
     [SerializeField]
     GameObject[] respawns;
     [SerializeField]
     float timeToSpawn = 1f;
+
+    private void Awake()
+    {
+        if (instance != null)
+            Debug.LogError("GamesController.instance уже определен.");
+        instance = this;
+    }
+
+    public void Lose()
+    {
+        Debug.Log("Lose");
+    }
 
     void Start()
     {
@@ -55,4 +68,5 @@ public class GamesController : MonoBehaviour
             yield return new WaitForSeconds(timeToSpawn);
         }
     }
+
 }
