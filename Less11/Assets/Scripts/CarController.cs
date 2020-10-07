@@ -26,6 +26,7 @@ public class CarController : MonoBehaviour
     GameObject leftSignalGroup;
     [SerializeField]
     GameObject rightSignalGroup;
+    Coroutine signalCoroutine;
 
     Rigidbody rigidbody = null;
 
@@ -36,7 +37,8 @@ public class CarController : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         if (direction != Directions.forward)
-            StartCoroutine(BlinkTurnLight());
+            BlinkStart();
+            
     }
 
     // Update is called once per frame
@@ -85,31 +87,48 @@ public class CarController : MonoBehaviour
         }
     }
 
-    IEnumerator BlinkTurnLight()
+    public void BlinkStart()
     {
-        rightSignalGroup.SetActive(false);
-        leftSignalGroup.SetActive(false);
-        var activeLightGroup = rightSignalGroup;
-        if (direction == Directions.left)
-            activeLightGroup = leftSignalGroup;
+        signalCoroutine = StartCoroutine(BlinkTurnLight());
 
-        var toggle = false;
-        while (true)
+        IEnumerator BlinkTurnLight()
         {
-            yield return new WaitForSeconds(0.2f);
-            toggle = !toggle;
-            activeLightGroup.SetActive(toggle);
+            rightSignalGroup.SetActive(false);
+            leftSignalGroup.SetActive(false);
+            var activeLightGroup = rightSignalGroup;
+            if (direction == Directions.left)
+                activeLightGroup = leftSignalGroup;
+
+            var toggle = false;
+            while (true)
+            {
+                yield return new WaitForSeconds(0.2f);
+                toggle = !toggle;
+                activeLightGroup.SetActive(toggle);
+            }
         }
     }
+
+    public void BlinkStop()
+    {
+        StopCoroutine(signalCoroutine);
+        rightSignalGroup.SetActive(false);
+        leftSignalGroup.SetActive(false);
+    }
+
+
 
     private void OnTriggerExit(Collider other)
     {
         if (other.transform.CompareTag("TurnRightBox") && direction == Directions.right || 
             other.transform.CompareTag("TurnLeftBox") && direction == Directions.left)
         {
+            //Выравнивание по направлению сетки
             var rotY = rigidbody.rotation.eulerAngles.y;
             var newRotY = Mathf.Round(rotY / 90f) * 90;
             rigidbody.rotation = Quaternion.Euler(0, newRotY, 0);
+
+            BlinkStop();
         }
     }
 
