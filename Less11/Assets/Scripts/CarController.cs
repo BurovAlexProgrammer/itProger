@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
 {
+    float currentSpeed;
     [SerializeField]
     float speed = 15f,
         turnRightMult = 6f,
@@ -13,11 +14,29 @@ public class CarController : MonoBehaviour
     public enum Directions { forward, left, right}
     [SerializeField]
     Directions direction;
+
+    [SerializeField]
+    float boostForce = 10f;
+    [SerializeField]
+    [Tooltip("Сколько времени будет держаться разгон")]
+    float boostTimeSetter = 2f;
+    float boostTime = 0f;
+
+    [SerializeField]
+    GameObject leftSignalGroup;
+    [SerializeField]
+    GameObject rightSignalGroup;
+
     Rigidbody rigidbody = null;
+
+
+
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();    
+        rigidbody = GetComponent<Rigidbody>();
+        if (direction != Directions.forward)
+            StartCoroutine(BlinkTurnLight());
     }
 
     // Update is called once per frame
@@ -36,7 +55,16 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbody.MovePosition(transform.position + transform.forward * speed * Time.fixedDeltaTime);
+        if (boostTime > 0)
+        {
+            boostTime -= Time.fixedDeltaTime;
+            currentSpeed = speed * boostForce;
+        }
+        else { 
+            boostTime = 0f; 
+            currentSpeed = speed; 
+        }
+        rigidbody.MovePosition(transform.position + transform.forward * currentSpeed * Time.fixedDeltaTime);
         //rigidbody.velocity = Vector3.forward * speed;
         //rigidbody.AddRelativeForce(Vector3.forward * speed);
     }
@@ -45,15 +73,32 @@ public class CarController : MonoBehaviour
     {
         if (other.transform.CompareTag("TurnRightBox") && direction == Directions.right)
         {
-            float rotateSpeed = speed * turnRightMult;
+            float rotateSpeed = currentSpeed * turnRightMult;
             Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, rotateSpeed, 0) * Time.fixedDeltaTime);
             rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
         }
         if (other.transform.CompareTag("TurnLeftBox") && direction == Directions.left)
         {
-            float rotateSpeed = speed * turnLeftMult;
+            float rotateSpeed = currentSpeed * turnLeftMult;
             Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, rotateSpeed, 0) * Time.fixedDeltaTime);
             rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
+        }
+    }
+
+    IEnumerator BlinkTurnLight()
+    {
+        rightSignalGroup.SetActive(false);
+        leftSignalGroup.SetActive(false);
+        var activeLightGroup = rightSignalGroup;
+        if (direction == Directions.left)
+            activeLightGroup = leftSignalGroup;
+
+        var toggle = false;
+        while (true)
+        {
+            yield return new WaitForSeconds(0.2f);
+            toggle = !toggle;
+            activeLightGroup.SetActive(toggle);
         }
     }
 
@@ -71,6 +116,11 @@ public class CarController : MonoBehaviour
     public void SetDirection(Directions direction)
     {
         this.direction = direction;
+    }
+
+    public void Boost()
+    {
+        boostTime = boostTimeSetter;
     }
 
     public static Directions RandomDirection()
