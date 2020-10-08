@@ -135,6 +135,11 @@ public class CarController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            Debug.DrawRay(contact.point, contact.normal, Color.white, 0.5f);
+        }
+
         if (collision.collider.CompareTag("Car") || collision.collider.CompareTag("Building"))
         {
             GamesController.instance.Lose();
