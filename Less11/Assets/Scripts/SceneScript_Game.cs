@@ -5,6 +5,12 @@ using UnityEngine.UI;
 
 public class SceneScript_Game : MonoBehaviour
 {
+
+    [SerializeField]
+    GameObject 
+        SettingsPanel,
+        RestartPanel,
+        DialogMainMenu;
     [SerializeField]
     Toggle soundToggle, musicToggle, postToggle;
     void Start()
@@ -33,5 +39,38 @@ public class SceneScript_Game : MonoBehaviour
     public void TogglePostEffects()
     {
         PlayerPrefs.SetInt(SettingKeys.PostEffectOn, postToggle.isOn ? 1 : 0);
+    }
+
+    public void CloseWindows()
+    {
+        SettingsPanel.SetActive(false);
+        RestartPanel.SetActive(false);
+    }
+
+    public void ShowSettingsMenu()
+    {
+        CloseWindows();
+        SettingsPanel.SetActive(true);
+    }
+
+    public void ShowRestartMenu()
+    {
+        CloseWindows();
+        RestartPanel.SetActive(true);
+    }
+
+    public void ShowDialogMainMenu()
+    {
+        DialogMainMenu.SetActive(true);
+    }
+
+    public void CloseDialogMainMenu()
+    {
+        DialogMainMenu.SetActive(false);
+    }
+
+    public void GoToMainMenu()
+    {
+
     }
 }
