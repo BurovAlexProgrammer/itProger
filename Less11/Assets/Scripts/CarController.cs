@@ -142,7 +142,7 @@ public class CarController : MonoBehaviour
 
         if (collision.collider.CompareTag("Car") || collision.collider.CompareTag("Building"))
         {
-            GamesController.instance.Lose();
+            GamesController.instance.GameOver();
             //collision.collider.GetComponent<CarController>().BlinkStop();
             //Destroy(collision.collider.GetComponent<CarController>());
             //rigidbody.AddRelativeForce(Vector3.forward * 300);

@@ -12,6 +12,7 @@ public class SceneScript_MainMenu : MonoBehaviour
 
     string webplayerQuitURL = "https://portai.ru/Burovav";
 
+
     void Start()
     {
         var temp = webplayerQuitURL; //Использование переменной для скрытие уведомления компилятора в других режимах Unity

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SceneScript_Game : MonoBehaviour
@@ -8,11 +9,18 @@ public class SceneScript_Game : MonoBehaviour
 
     [SerializeField]
     GameObject 
+        GamePanel,
         SettingsPanel,
         RestartPanel,
         DialogMainMenu;
     [SerializeField]
     Toggle soundToggle, musicToggle, postToggle;
+
+    private void Awake()
+    {
+        GamesController.instance.GameOverEvent += OnGameOver;
+    }
+
     void Start()
     {
         musicToggle.isOn = SettingKeys.IsEnabled(SettingKeys.MusicOn);
@@ -69,8 +77,24 @@ public class SceneScript_Game : MonoBehaviour
         DialogMainMenu.SetActive(false);
     }
 
+    public void TryGoToMainMenu()
+    {
+        if (!GamesController.instance.IsGameOver)
+        {
+            ShowDialogMainMenu();
+        } else
+        {
+            GoToMainMenu();
+        }
+    }
+
     public void GoToMainMenu()
     {
+        SceneManager.LoadScene("MainMenu");
+    }
 
+    void OnGameOver()
+    {
+        RestartPanel.SetActive(true);
     }
 }

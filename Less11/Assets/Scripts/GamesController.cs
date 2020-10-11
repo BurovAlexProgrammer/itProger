@@ -1,35 +1,78 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GamesController : MonoBehaviour
 {
     public static GamesController instance;
+
+    [SerializeField]
+    AudioSource musicController;
+    [SerializeField]
+    AudioListener audioListener;
+    [SerializeField]
+    UnityEngine.Rendering.PostProcessing.PostProcessLayer postProcessing;
+
     [SerializeField]
     GameObject[] carPrefabs;
     [SerializeField]
     GameObject[] respawns;
     [SerializeField]
+    float initTimeSpan = 1.1f;
+    [SerializeField]
     float timeToSpawn = 1f;
+
+    bool isGameOver = false;
+    public bool IsGameOver { get { return isGameOver; } }
+    bool isGamePaused = false;
+    Coroutine respawnCoroutine = null;
+
+    public event System.Action SettingsChanged, GameOverEvent;
 
     private void Awake()
     {
         if (instance != null)
             Debug.LogError("GamesController.instance уже определен.");
         instance = this;
+        //Пoдписка на изменение опций
+        SettingsChanged += () => {
+            var musicOn = SettingKeys.IsEnabled(SettingKeys.MusicOn);
+            musicController.enabled = musicOn;
+
+            var soundOn = SettingKeys.IsEnabled(SettingKeys.SoundOn);
+            audioListener.enabled = soundOn;
+
+            var effectsOn = SettingKeys.IsEnabled(SettingKeys.PostEffectOn);
+            postProcessing.enabled = effectsOn;
+        };
     }
 
-    public void Lose()
+    public void OnSettingsChanged()
     {
-        Debug.Log("Lose");
+        SettingsChanged?.Invoke();
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        GameOverEvent?.Invoke();
+        //Debug.Log("GameOver");
     }
 
     void Start()
     {
-        StartCoroutine(RespawnCar());
+        respawnCoroutine = StartCoroutine(RespawnCar());
     }
 
     void Update()
+    {
+        if (!isGameOver && !isGamePaused)
+            Play();
+
+    }
+
+    void Play()
     {
         bool tap1;
         Vector2 tapPosition1 = new Vector2();
@@ -61,12 +104,32 @@ public class GamesController : MonoBehaviour
     {
         while (true)
         {
-            var randomRespawn = Random.Range(0, respawns.Length);
-            var respawn = respawns[randomRespawn];
-            var newCar = Instantiate(carPrefabs[Random.Range(0,2)], respawn.transform.position, respawn.transform.rotation);
-            newCar.GetComponent<CarController>().SetDirection(CarController.RandomDirection());
+            if (!isGameOver && !isGamePaused)
+            {
+                var randomRespawn = Random.Range(0, respawns.Length);
+                var respawn = respawns[randomRespawn];
+                var newCar = Instantiate(carPrefabs[Random.Range(0, 2)], respawn.transform.position, respawn.transform.rotation);
+                newCar.GetComponent<CarController>().SetDirection(CarController.RandomDirection());
+            }
             yield return new WaitForSeconds(timeToSpawn);
         }
+    }
+
+    public void PauseGame()
+    {
+        isGamePaused = true;
+    }
+
+    public void ResumeGame()
+    {
+        isGamePaused = false;
+    }
+
+    public void RestartGame()
+    {
+        isGameOver = false;
+        GameObject.FindGameObjectsWithTag("Car").ToList().ForEach((car) => GameObject.Destroy(car));
+        timeToSpawn = initTimeSpan;
     }
 
 }
