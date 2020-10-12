@@ -14,6 +14,7 @@ public class GamesController : MonoBehaviour
     [SerializeField]
     UnityEngine.Rendering.PostProcessing.PostProcessLayer postProcessing;
 
+    [Header("Respawn")]
     [SerializeField]
     GameObject[] carPrefabs;
     [SerializeField]
@@ -23,18 +24,36 @@ public class GamesController : MonoBehaviour
     [SerializeField]
     float timeToSpawn = 1f;
 
+    [Header("TimeShift")]
+    [SerializeField]
+    float timeShiftValue = 0.6f;
+    [SerializeField]
+    float timeShiftDuration = 2f;
+    bool isTimeShift = false;
+    public bool IsTimeShift { get { return isTimeShift; } }
+
+    [Header("Scores")]
+    [SerializeField]
+    int currentScores = 0;
+    public int CurrentScores { get { return currentScores; } }
+    int topScores = 0;
+    public int TopScores { get { return topScores; } }
+
     bool isGameOver = false;
     public bool IsGameOver { get { return isGameOver; } }
     bool isGamePaused = false;
     Coroutine respawnCoroutine = null;
 
-    public event System.Action SettingsChanged, GameOverEvent;
+    public event System.Action SettingsChanged, GameOverEvent, TimeShiftChanged;
 
     private void Awake()
     {
         if (instance != null)
             Debug.LogError("GamesController.instance уже определен.");
         instance = this;
+
+        topScores = PlayerPrefs.GetInt("TopScores");
+
         //Пoдписка на изменение опций
         SettingsChanged += () => {
             var musicOn = SettingKeys.IsEnabled(SettingKeys.MusicOn);
@@ -69,7 +88,6 @@ public class GamesController : MonoBehaviour
     {
         if (!isGameOver && !isGamePaused)
             Play();
-
     }
 
     void Play()
@@ -130,6 +148,35 @@ public class GamesController : MonoBehaviour
         isGameOver = false;
         GameObject.FindGameObjectsWithTag("Car").ToList().ForEach((car) => GameObject.Destroy(car));
         timeToSpawn = initTimeSpan;
+        currentScores = 0;
     }
 
+    public void TimeShift()
+    {
+        StartCoroutine(TimeShiftCoroutine());
+    }
+
+    IEnumerator TimeShiftCoroutine()
+    {
+        isTimeShift = true;
+        Time.timeScale = timeShiftValue;
+        //TimeShiftChanged?.Invoke();
+        yield return new WaitForSeconds(timeShiftDuration);
+        isTimeShift = false;
+        Time.timeScale = 1f;
+        //TimeShiftChanged?.Invoke();  TODO - разобраться почему в корутине не работает подписка
+    }
+
+    public void SetRecord()
+    {
+        if (currentScores > topScores)
+            topScores = currentScores;
+        PlayerPrefs.SetInt("TopScores", currentScores);
+    }
+
+    public void AddScore(int scoreValue)
+    {
+        if (IsGameOver) return;
+        currentScores += scoreValue;
+    }
 }

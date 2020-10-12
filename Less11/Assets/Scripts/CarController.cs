@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CarController : MonoBehaviour
 {
-    bool isCrashed = false;
     float currentSpeed;
     [SerializeField]
     float speed = 15f,
@@ -29,14 +28,14 @@ public class CarController : MonoBehaviour
     GameObject rightSignalGroup = null;
     Coroutine signalCoroutine = null;
 
-    Rigidbody rigidbody = null;
+    Rigidbody _rigidbody = null;
 
 
 
 
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         if (direction != Directions.forward)
             BlinkStart();
             
@@ -52,6 +51,7 @@ public class CarController : MonoBehaviour
     {
         if (other.transform.CompareTag("DeleteTrigger"))
         {
+            GamesController.instance.AddScore(1);
             Destroy(gameObject);
         }
     }
@@ -68,7 +68,7 @@ public class CarController : MonoBehaviour
             currentSpeed = speed; 
         }
         //rigidbody.MovePosition(transform.position + transform.forward * currentSpeed * Time.fixedDeltaTime);
-        rigidbody.velocity = transform.forward * currentSpeed;
+        _rigidbody.velocity = transform.forward * currentSpeed;
     }
 
     private void OnTriggerStay(Collider other)
@@ -77,13 +77,13 @@ public class CarController : MonoBehaviour
         {
             float rotateSpeed = currentSpeed * turnRightMult;
             Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, rotateSpeed, 0) * Time.fixedDeltaTime);
-            rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
+            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
         if (other.transform.CompareTag("TurnLeftBox") && direction == Directions.left)
         {
             float rotateSpeed = currentSpeed * turnLeftMult;
             Quaternion deltaRotation = Quaternion.Euler(new Vector3(0, rotateSpeed, 0) * Time.fixedDeltaTime);
-            rigidbody.MoveRotation(rigidbody.rotation * deltaRotation);
+            _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
         }
     }
 
@@ -125,9 +125,9 @@ public class CarController : MonoBehaviour
             other.transform.CompareTag("TurnLeftBox") && direction == Directions.left)
         {
             //Выравнивание по направлению сетки
-            var rotY = rigidbody.rotation.eulerAngles.y;
+            var rotY = _rigidbody.rotation.eulerAngles.y;
             var newRotY = Mathf.Round(rotY / 90f) * 90;
-            rigidbody.rotation = Quaternion.Euler(0, newRotY, 0);
+            _rigidbody.rotation = Quaternion.Euler(0, newRotY, 0);
 
             BlinkStop();
         }
@@ -147,6 +147,7 @@ public class CarController : MonoBehaviour
             //Destroy(collision.collider.GetComponent<CarController>());
             //rigidbody.AddRelativeForce(Vector3.forward * 300);
             //collision.rigidbody.AddRelativeForce(Vector3.back * 300);
+            GamesController.instance.SetRecord();
             BlinkStop();
             Destroy(this);
         }

@@ -8,17 +8,22 @@ public class SceneScript_Game : MonoBehaviour
 {
 
     [SerializeField]
-    GameObject 
-        GamePanel,
-        SettingsPanel,
-        RestartPanel,
-        DialogMainMenu;
+    GameObject
+        GamePanel = null,
+        SettingsPanel = null,
+        RestartPanel = null,
+        DialogMainMenu = null;
     [SerializeField]
-    Toggle soundToggle, musicToggle, postToggle;
+    Toggle soundToggle = null, musicToggle = null, postToggle = null;
+    [SerializeField]
+    Image buttonTimeShift = null;
+    [SerializeField]
+    Text scoresLabel = null, topScores = null;
 
     private void Awake()
     {
         GamesController.instance.GameOverEvent += OnGameOver;
+        //GamesController.instance.TimeShiftChanged += OnTimeShiftChanged;
     }
 
     void Start()
@@ -28,10 +33,21 @@ public class SceneScript_Game : MonoBehaviour
         postToggle.isOn = SettingKeys.IsEnabled(SettingKeys.PostEffectOn);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        scoresLabel.text = GamesController.instance.CurrentScores.ToString();
+        topScores.text = GamesController.instance.TopScores.ToString();
+
+        if (GamesController.instance.IsTimeShift)
+        {
+            buttonTimeShift.color = Color.white.SetAlpha(0.3f);
+            buttonTimeShift.raycastTarget = false;
+        }
+        else
+        {
+            buttonTimeShift.color = Color.white.SetAlpha(1f);
+            buttonTimeShift.raycastTarget = true;
+        }
     }
 
     public void ToggleSound()
@@ -96,5 +112,18 @@ public class SceneScript_Game : MonoBehaviour
     void OnGameOver()
     {
         RestartPanel.SetActive(true);
+    }
+
+    public void TimeShift()
+    {
+        if (!GamesController.instance.IsTimeShift)
+            GamesController.instance.TimeShift();
+    }
+
+
+    public void RestartGame()
+    {
+        GamesController.instance.RestartGame();
+        CloseWindows();
     }
 }
