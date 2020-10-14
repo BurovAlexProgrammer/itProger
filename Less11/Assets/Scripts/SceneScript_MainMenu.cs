@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 public class SceneScript_MainMenu : MonoBehaviour
 {
     [SerializeField]
-    GameObject mainMenuPanel = null;
-    [SerializeField]
-    GameObject sureExitPanel = null;
+    GameObject 
+        mainMenuPanel = null,
+        exitDialog = null,
+        storePanel = null,
+        settingsPanel = null;
 
     string webplayerQuitURL = "https://portai.ru/Burovav";
 
@@ -41,7 +43,8 @@ public class SceneScript_MainMenu : MonoBehaviour
     void HideAllPanels()
     {
         mainMenuPanel.SetActive(false);
-        sureExitPanel.SetActive(false);
+        //exitDialog.SetActive(false);
+        storePanel.SetActive(false);
     }
 
     public void ShowMainMenu()
@@ -50,18 +53,17 @@ public class SceneScript_MainMenu : MonoBehaviour
         mainMenuPanel.SetActive(true);
     }
 
-    public void ShowSureExit()
+    public void ShowExitDialog()
     {
-        HideAllPanels();
-        sureExitPanel.SetActive(true);
+        exitDialog.SetActive(true);
     }
 
-    public void GoToStore()
+    public void ShowStorePanel()
     {
-
+        
     }
 
-    public void MuteMusic()
+    public void ShowSettingsPanel()
     {
 
     }

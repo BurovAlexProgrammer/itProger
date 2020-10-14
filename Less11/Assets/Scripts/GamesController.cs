@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public class GamesController : MonoBehaviour
 {
@@ -44,7 +45,10 @@ public class GamesController : MonoBehaviour
     bool isGamePaused = false;
     Coroutine respawnCoroutine = null;
 
-    public event System.Action SettingsChanged, GameOverEvent, TimeShiftChanged;
+    public UnityEvent
+        SettingsChanged,
+        GameOverEvent,
+        TimeShiftChanged;
 
     private void Awake()
     {
@@ -53,23 +57,18 @@ public class GamesController : MonoBehaviour
         instance = this;
 
         topScores = PlayerPrefs.GetInt("TopScores");
-
-        //Пoдписка на изменение опций
-        SettingsChanged += () => {
-            var musicOn = SettingKeys.IsEnabled(SettingKeys.MusicOn);
-            musicController.enabled = musicOn;
-
-            var soundOn = SettingKeys.IsEnabled(SettingKeys.SoundOn);
-            audioListener.enabled = soundOn;
-
-            var effectsOn = SettingKeys.IsEnabled(SettingKeys.PostEffectOn);
-            postProcessing.enabled = effectsOn;
-        };
     }
 
     public void OnSettingsChanged()
     {
-        SettingsChanged?.Invoke();
+        var musicOn = SettingKeys.IsEnabled(SettingKeys.MusicOn);
+        musicController.enabled = musicOn;
+
+        var soundOn = SettingKeys.IsEnabled(SettingKeys.SoundOn);
+        audioListener.enabled = soundOn;
+
+        var effectsOn = SettingKeys.IsEnabled(SettingKeys.PostEffectOn);
+        postProcessing.enabled = effectsOn;
     }
 
     public void GameOver()
@@ -127,6 +126,8 @@ public class GamesController : MonoBehaviour
                 var randomRespawn = Random.Range(0, respawns.Length);
                 var respawn = respawns[randomRespawn];
                 var newCar = Instantiate(carPrefabs[Random.Range(0, 2)], respawn.transform.position, respawn.transform.rotation);
+                if (newCar.GetComponent<CarController>() == null)
+                    throw new System.Exception("Error");
                 newCar.GetComponent<CarController>().SetDirection(CarController.RandomDirection());
             }
             yield return new WaitForSeconds(timeToSpawn);

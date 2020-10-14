@@ -22,7 +22,7 @@ public class SceneScript_Game : MonoBehaviour
 
     private void Awake()
     {
-        GamesController.instance.GameOverEvent += OnGameOver;
+        GamesController.instance.GameOverEvent.AddListener(OnGameOver);
         //GamesController.instance.TimeShiftChanged += OnTimeShiftChanged;
     }
 
