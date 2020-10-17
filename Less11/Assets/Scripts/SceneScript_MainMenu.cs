@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneScript_MainMenu : MonoBehaviour
 {
@@ -11,13 +12,19 @@ public class SceneScript_MainMenu : MonoBehaviour
         exitDialog = null,
         storePanel = null,
         settingsPanel = null;
+    [SerializeField]
+    Text coinsCountLabel = null;
 
     string webplayerQuitURL = "https://portai.ru/Burovav";
 
+    private void Awake()
+    {
+    }
 
     void Start()
     {
         var temp = webplayerQuitURL; //Использование переменной для скрытие уведомления компилятора в других режимах Unity
+        
     }
 
     void Update()
@@ -60,12 +67,19 @@ public class SceneScript_MainMenu : MonoBehaviour
 
     public void ShowStorePanel()
     {
-        
+        HideAllPanels();
+        storePanel.SetActive(true);
     }
 
     public void ShowSettingsPanel()
     {
+        HideAllPanels();
+        settingsPanel.SetActive(true);
+    }
 
+    public void OnSettingsChanged()
+    {
+        coinsCountLabel.text = SettingsController.Instance.GetInt(SettingsController.Names.CoinsCount).ToString();
     }
 
     public void QuitGame()

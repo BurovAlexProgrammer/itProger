@@ -10,7 +10,8 @@ public class SettingsController : MonoBehaviour
     [SerializeField]
     List<SettingItem> settingItems = new List<SettingItem>();
 
-    public UnityEvent SettingsChanged;
+    public UnityEvent 
+        SettingsChanged, SettingsLoaded;
 
     private void Awake()
     {
@@ -18,25 +19,22 @@ public class SettingsController : MonoBehaviour
             Debug.LogError("SettingsController.instance уже определен.");
         Instance = this;
 
-    settingItems = new List<SettingItem>()
-    {
-        new SettingItem(Names.CoinsCount, 0),
-        new SettingItem(Names.MusicOn, 1),
-        new SettingItem(Names.SoundOn, 1),
-        new SettingItem(Names.EffectOn, 1)
-    };
-}
+        settingItems = new List<SettingItem>()
+        {   
+            new SettingItem(Names.CoinsCount, 0),
+            new SettingItem(Names.MusicOn, 1),
+            new SettingItem(Names.SoundOn, 1),
+            new SettingItem(Names.EffectOn, 1)
+        };
+
+    }
 
     void Start()
     {
-        SetValue(Names.CoinsCount, 999);
+        SettingsLoaded?.Invoke();
+        SettingsChanged?.Invoke();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        Debug.Log(GetInt(Names.CoinsCount));
-    }
 
     public object GetValue(string name)
     {
@@ -65,8 +63,8 @@ public class SettingsController : MonoBehaviour
         if (!PlayerPrefs.HasKey(name))
             throw new PlayerPrefsException($"Не найден ключ: '{name}'.");
         settingItems.Single((i) => i.Name.Equals(name)).SetValue(value);
+        SettingsChanged?.Invoke();
     }
-
 
     [System.Serializable]
     class SettingItem
@@ -77,9 +75,10 @@ public class SettingsController : MonoBehaviour
         public string Name { get { return name; } }
         [SerializeField]
         Types type = Types.Int;
-        [SerializeField]
         object value = null;
-        public object Value { get { return value; } }
+        [SerializeField]
+        string ValueAsString;
+        public object Value { get { return value; } private set { this.value = value; ValueAsString = value.ToString(); } }
 
         public SettingItem(string name, int defValue)
         {
@@ -88,10 +87,10 @@ public class SettingsController : MonoBehaviour
             if (!HasPref())
             {
                 PlayerPrefs.SetInt(name, defValue);
-                value = defValue;
+                Value = defValue;
             }
             else
-                value = PlayerPrefs.GetInt(name);
+                Value = PlayerPrefs.GetInt(name);
         }
         public SettingItem(string name, float defValue)
         {
@@ -100,10 +99,10 @@ public class SettingsController : MonoBehaviour
             if (!HasPref())
             {
                 PlayerPrefs.SetFloat(name, defValue);
-                value = defValue;
+                Value = defValue;
             }
             else
-                value = PlayerPrefs.GetFloat(name);
+                Value = PlayerPrefs.GetFloat(name);
         }
         public SettingItem(string name, string defValue)
         {
@@ -112,21 +111,21 @@ public class SettingsController : MonoBehaviour
             if (!HasPref())
             {
                 PlayerPrefs.SetString(name, defValue);
-                value = defValue;
+                Value = defValue;
             }
             else
-                value = PlayerPrefs.GetFloat(name);
+                Value = PlayerPrefs.GetFloat(name);
         }
 
         public void SetValue(object value)
         {
-            this.value = value;
+            Value = value;
             if (type == Types.Float)
-                PlayerPrefs.SetFloat(name, (float)value);
+                PlayerPrefs.SetFloat(name, (float)Value);
             if (type == Types.Int)
-                PlayerPrefs.SetInt(name, (int)value);
+                PlayerPrefs.SetInt(name, (int)Value);
             if (type == Types.String)
-                PlayerPrefs.SetString(name, (string)value);
+                PlayerPrefs.SetString(name, (string)Value);
         }
 
         public bool HasPref()
@@ -134,8 +133,6 @@ public class SettingsController : MonoBehaviour
             return PlayerPrefs.HasKey(name);
         }
     }
-
-    
 
     public class Names
     {
