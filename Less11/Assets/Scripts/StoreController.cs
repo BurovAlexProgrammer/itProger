@@ -24,7 +24,7 @@ public class StoreController : MonoBehaviour
     private void Awake()
     {
         Init();
-        SettingsController.Instance.SetValue(SettingsController.Names.CoinsCount, 999);
+        SettingsController.Instance.SetValue(SettingsController.Names.CoinsCount, 999);  //Temp remove it
     }
 
     void Init()
