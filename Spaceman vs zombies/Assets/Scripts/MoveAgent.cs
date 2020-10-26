@@ -15,21 +15,22 @@ public class MoveAgent : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        SetPoint();
+        SetRandomPoint();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Point"))
-            SetPoint();
+            if (targetPoint == other.gameObject)
+                SetRandomPoint();
     }
 
-    void SetPoint()
+    public void SetRandomPoint()
     {
         var newPoint = points.OrderBy(el => Random.Range(1, points.Length)).Take(1).First();
         if (newPoint == targetPoint)
         {
-            SetPoint();
+            SetRandomPoint();
             return;
         }
         targetPoint = newPoint;
