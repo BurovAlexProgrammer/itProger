@@ -12,7 +12,7 @@ public class AdditionalTankEffect : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();   
     }
 
-    void Update()
+    void FixedUpdate()
     {
         var vertical = Input.GetAxisRaw("Vertical");
         if (vertical != 0)
