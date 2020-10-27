@@ -94,4 +94,9 @@ public class LookAt : MonoBehaviour
 
         transform.localEulerAngles = angles;
     }
+
+    public void SetTarget(GameObject newTarget)
+    {
+        target = newTarget;
+    }
 }
