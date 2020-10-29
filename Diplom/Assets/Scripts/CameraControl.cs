@@ -2,23 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookAt : MonoBehaviour
+public class CameraControl : MonoBehaviour
 {
     [SerializeField]
-    GameObject target = null;
-
-    [SerializeField]
-    Vector3 offset = Vector3.zero;
-
-    [SerializeField]
-    float rotateSpeed = 1.5f;
-
-    enum LockAxises { None, Horizontal, Vertical, }
-    [SerializeField]
-    LockAxises lockAxis = LockAxises.None;
+    float mouseSense = 30f;
 
     [Header("Angles")]
-    [SerializeField ,Range(-180f, 180f)]
+    [SerializeField, Range(-180f, 180f)]
     float verticalMinAngle = -45;
     [SerializeField, Range(-180f, 180f)]
     float verticalMaxAngle = 45;
@@ -28,7 +18,7 @@ public class LookAt : MonoBehaviour
     float horizontalMaxAngle = 45;
 
     //Previous values to track changes
-    float 
+    float
         verticalMinAnglePrev,
         verticalMaxAnglePrev,
         horizontalMinAnglePrev,
@@ -70,38 +60,19 @@ public class LookAt : MonoBehaviour
 
     void Update()
     {
-        var parent = transform.parent;
-        var localRotateVector = Vector3.zero;
-        if (parent)
-            localRotateVector = parent.InverseTransformDirection(target.transform.position - transform.position + offset);
-        else
-            localRotateVector = target.transform.position - transform.position + offset;
-        var rotation = Quaternion.LookRotation(localRotateVector);
-        rotation.z = original.z;
-        if (lockAxis == LockAxises.Horizontal)
-            rotation.y = original.y;
-        if (lockAxis == LockAxises.Vertical)
-            rotation.x = original.x;
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, rotation, Time.deltaTime * rotateSpeed);
-
-        var angles = transform.localEulerAngles;
-        
-        if (lockAxis != LockAxises.Vertical)
+        if (Input.GetAxisRaw("Mouse X") != 0 || Input.GetAxisRaw("Mouse Y") != 0)
         {
+            var angles = Vector3.zero;
+            angles = transform.localEulerAngles;
+            angles += 
+                Vector3.up * mouseSense * Input.GetAxis("Mouse X") * Time.deltaTime + 
+                Vector3.right * mouseSense * Input.GetAxis("Mouse Y") * Time.deltaTime;
             if (angles.x > 180) angles.x -= 360;
             angles.x = Mathf.Clamp(angles.x, verticalMinAngle, verticalMaxAngle);
-        }
-        if (lockAxis != LockAxises.Horizontal)
-        {
             if (angles.y > 180) angles.y -= 360;
             angles.y = Mathf.Clamp(angles.y, horizontalMinAngle, horizontalMaxAngle);
+            transform.localEulerAngles = angles;
+
         }
-
-        transform.localEulerAngles = angles;
-    }
-
-    public void SetTarget(GameObject newTarget)
-    {
-        target = newTarget;
     }
 }

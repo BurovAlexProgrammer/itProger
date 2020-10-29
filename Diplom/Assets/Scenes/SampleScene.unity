@@ -276,6 +276,12 @@ WheelCollider:
     m_AsymptoteValue: 0.75
     m_Stiffness: 1
   m_Enabled: 1
+--- !u!1 &339254078 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5888371917259397549, guid: b49ca7e4c36cee2478831667584c842f,
+    type: 3}
+  m_PrefabInstance: {fileID: 7035402181795324793}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &655965417
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,9 +509,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 200
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -514,22 +520,85 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 0.8049278
+      inSlope: -200.07968
+      outSlope: -200.07968
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.01
+      value: 0.5
+      inSlope: -50.01992
+      outSlope: -50.01992
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.02
+      value: 0.25
+      inSlope: -12.50498
+      outSlope: -12.50498
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.04
+      value: 0.125
+      inSlope: -3.126245
+      outSlope: -3.126245
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.08
+      value: 0.0625
+      inSlope: -0.78156126
+      outSlope: -0.78156126
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.16
+      value: 0.03125
+      inSlope: -0.19539031
+      outSlope: -0.19539031
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.32
+      value: 0.015625
+      inSlope: -0.04884758
+      outSlope: -0.04884758
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.64
+      value: 0.0078125
+      inSlope: -0.012211895
+      outSlope: -0.012211895
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
+      value: 0.005
+      inSlope: -0.005001994
+      outSlope: -0.005001994
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -568,7 +637,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0.79950714
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -591,6 +660,7 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
+  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -675,13 +745,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f704ed7feb6ca949a6afd8ebbac0d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 781002204}
-  targetOffset: {x: 0, y: 0.12, z: 0}
-  followSpeed: 100
-  followDistance: 5
+  target: {fileID: 339254078}
+  targetOffset: {x: 0, y: 1.5, z: -4.35}
+  followSpeed: 150
+  followDistance: 0
   followMinDistance: 2
-  followMaxDistance: 8
-  smoothTime: 0.3
+  followMaxDistance: 10
+  smoothTime: 0.2
 --- !u!54 &963194230
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -698,6 +768,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &963194231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98d5812d5dfb84641a16e4cbc1cd0ca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 781002204}
+  offset: {x: 0, y: 1, z: 0}
+  rotateSpeed: 1.5
+  lockAxis: 0
+  verticalMinAngle: -45
+  verticalMaxAngle: 45
+  horizontalMinAngle: -180
+  horizontalMaxAngle: 180
 --- !u!1 &1254767467
 GameObject:
   m_ObjectHideFlags: 0

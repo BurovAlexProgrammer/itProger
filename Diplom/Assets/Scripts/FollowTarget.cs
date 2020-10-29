@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿//rev 2
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 [AddComponentMenu("Behaviour/FollowTarget")]
 public class FollowTarget : MonoBehaviour
 {
@@ -11,31 +13,26 @@ public class FollowTarget : MonoBehaviour
     [SerializeField]
     Vector3 targetOffset = Vector3.zero;
 
-    [SerializeField]
-    float followSpeed = 10f;
+    //[SerializeField]
+    //float followSpeed = 10f;
 
-    [SerializeField]
-    float followDistance = 5f;
+    //[SerializeField]
+    //float followMaxDeviation = 3f;
 
-    [SerializeField]
-    float followMinDistance = 2f;
+    //[SerializeField]
+    //float smoothTime = 5;
 
-    [SerializeField]
-    float followMaxDistance = 8f;
-
-    [SerializeField]
-    float smoothTime = 0.3F;
-
-    private void Update()
+    private void FixedUpdate()
     {
-        var distance = Vector3.Distance(transform.position, target.transform.position);
-        var diff = distance - followDistance;
-        var direction = Mathf.Sign(diff);
-        transform.LookAt(target.transform);
-        var newPosition = target.transform.position + targetOffset - Vector3.forward * followDistance;
-        //transform.position = Vector3.Lerp(transform.position, newPosition, followSpeed);
+        //Надо разбираться какие-то лаги, пока ограничусь простым вариантом жесткой привязки
+        var newPosition = target.transform.position + targetOffset;
+        //var distance = Vector3.Distance(transform.position, newPosition);
         var velocity = Vector3.zero;
-        transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTime, followSpeed);
+        //var smoothTimeCorr = Time.fixedDeltaTime * smoothTime;
+        //if (distance > followMaxDeviation)
+        //    smoothTimeCorr = Time.fixedDeltaTime;
+        //transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, smoothTimeCorr, followSpeed);
+        transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref velocity, Time.fixedDeltaTime, 1000);
         GetComponent<Rigidbody>().velocity = velocity;
     }
 }

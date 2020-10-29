@@ -42,9 +42,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 28903.533
-    damper: 867.106
+    damper: 867.1061
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357145
+  m_SuspensionDistance: 0.23357147
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -213,7 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86d935d1e7a2d104a8afd0c0c443f1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  accForce: 1000
   target: {fileID: 0}
   tower: {fileID: 1313716450}
   cannon: {fileID: 240637790}
@@ -222,6 +221,7 @@ MonoBehaviour:
   fireRate: 0.5
   fireSpeed: 100
   explosiveForce: 30
+  shellContainer: {fileID: 0}
 --- !u!114 &781002209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,9 +277,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 20635.562
-    damper: 619.0669
+    damper: 619.06696
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357143
+  m_SuspensionDistance: 0.23357144
   m_ForceAppPointDistance: 0.8037139
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -340,7 +340,7 @@ WheelCollider:
     spring: 21096.463
     damper: 632.8939
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357143
+  m_SuspensionDistance: 0.23357144
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -429,9 +429,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 29364.438
-    damper: 880.9331
+    damper: 880.93317
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357143
+  m_SuspensionDistance: 0.23357145
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
