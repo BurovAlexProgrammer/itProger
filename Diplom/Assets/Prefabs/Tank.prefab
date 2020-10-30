@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7949316620220232115}
   - component: {fileID: 1323227723298766150}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: a1l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,9 +42,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 28903.533
-    damper: 867.1061
+    damper: 867.106
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357147
+  m_SuspensionDistance: 0.23357145
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -71,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6983038932874209198}
   - component: {fileID: 1313716450}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TowerPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,9 @@ GameObject:
   - component: {fileID: 6080103601478801827}
   - component: {fileID: 781002205}
   - component: {fileID: 781002209}
-  m_Layer: 0
+  - component: {fileID: 781002211}
+  - component: {fileID: 4976158094308225131}
+  m_Layer: 8
   m_Name: Tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,10 +218,11 @@ MonoBehaviour:
   target: {fileID: 0}
   tower: {fileID: 1313716450}
   cannon: {fileID: 240637790}
-  shellPrefab: {fileID: 6812445048556358240}
+  shellPrefab: {fileID: 1602889566274557973, guid: 8b12873c250a5c041ab4021d4430a6b4,
+    type: 3}
   firePoint: {fileID: 6812445048556358240}
-  fireRate: 0.5
-  fireSpeed: 100
+  fireRate: 0.9
+  fireSpeed: 700
   explosiveForce: 30
   shellContainer: {fileID: 0}
 --- !u!114 &781002209
@@ -235,6 +238,182 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torForce: 2000
+--- !u!82 &781002211
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4083792033084761595}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: c8ad96d6b6820f34abbc2c8cbf0cd243, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 200
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.8049278
+      inSlope: -200.07968
+      outSlope: -200.07968
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.01
+      value: 0.5
+      inSlope: -50.01992
+      outSlope: -50.01992
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.02
+      value: 0.25
+      inSlope: -12.50498
+      outSlope: -12.50498
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.04
+      value: 0.125
+      inSlope: -3.126245
+      outSlope: -3.126245
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.08
+      value: 0.0625
+      inSlope: -0.78156126
+      outSlope: -0.78156126
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.16
+      value: 0.03125
+      inSlope: -0.19539031
+      outSlope: -0.19539031
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.32
+      value: 0.015625
+      inSlope: -0.04884758
+      outSlope: -0.04884758
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.64
+      value: 0.0078125
+      inSlope: -0.012211895
+      outSlope: -0.012211895
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0.005
+      inSlope: -0.005001994
+      outSlope: -0.005001994
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.79950714
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4976158094308225131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4083792033084761595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b43a27c0a140bf45a5d785255220cf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - name: Shot
+    clip: {fileID: 8300000, guid: acb2eb1d8de0c744c83a4ce9beae8da2, type: 3}
+    duration: 0
+    loop: 0
 --- !u!1 &6223477408043693956
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +424,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7064209707489221792}
   - component: {fileID: 4496483353898239830}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: a0l
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,9 +456,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 20635.562
-    damper: 619.06696
+    damper: 619.0669
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357144
+  m_SuspensionDistance: 0.23357143
   m_ForceAppPointDistance: 0.8037139
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -306,7 +485,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6430438989123115830}
   - component: {fileID: 4563514346405603528}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: a0r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +519,7 @@ WheelCollider:
     spring: 21096.463
     damper: 632.8939
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357144
+  m_SuspensionDistance: 0.23357143
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -366,7 +545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7907783517474299615}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FireStartPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +560,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6812445048556358240}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.48}
+  m_LocalPosition: {x: 0, y: 0, z: 0.953}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7460011533201136114}
@@ -397,7 +576,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8776587600616398942}
   - component: {fileID: 6503773663014336317}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: a1r
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -429,9 +608,9 @@ WheelCollider:
   m_Radius: 0.37
   m_SuspensionSpring:
     spring: 29364.438
-    damper: 880.93317
+    damper: 880.9331
     targetPosition: 0.42
-  m_SuspensionDistance: 0.23357145
+  m_SuspensionDistance: 0.23357143
   m_ForceAppPointDistance: 0.8037138
   m_Mass: 20
   m_WheelDampingRate: 0.25
@@ -460,7 +639,7 @@ GameObject:
   - component: {fileID: 2335612205742500013}
   - component: {fileID: 400291892788672630}
   - component: {fileID: 7035402180981660215}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankFree_Yel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -556,7 +735,7 @@ GameObject:
   - component: {fileID: 9000730095521504216}
   - component: {fileID: 7035402181758743586}
   - component: {fileID: 240637790}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankFree_Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -671,7 +850,7 @@ GameObject:
   - component: {fileID: 8015865484466358221}
   - component: {fileID: 1765240672806514559}
   - component: {fileID: 7035402181719116291}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TankFree_Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
