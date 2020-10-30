@@ -6,6 +6,8 @@ using UnityEngine;
 [AddComponentMenu("Behaviour/DestroyAfter")]
 public class DestroyAfter : MonoBehaviour
 {
+    enum Cases { timeOut, animationEnded, collisionEnter, particlesEnded}
+
     [SerializeField]
     float timer = 1f;
 
